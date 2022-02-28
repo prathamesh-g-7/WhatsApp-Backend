@@ -43,6 +43,6 @@ app.post("/sign-up", (req, res) => {
     });
   });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening on port 3005`)
 })
