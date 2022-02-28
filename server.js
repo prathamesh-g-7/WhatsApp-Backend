@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.post("/sign-up", (req, res) => {  
+  console.log("request---------->",req)
     const finalUser = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -36,6 +37,7 @@ app.post("/sign-up", (req, res) => {
   
     userSchema.create(finalUser, (err, data) => {
       if (err) {
+        console.log("err in sign up------------------> ",err)
         res.status(500).send(err);
       } else {
         res.status(201).send(data);
