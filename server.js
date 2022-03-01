@@ -60,7 +60,7 @@ app.post("/user-exist", (req, res) => {
 
       setTimeout(() => {
         if (result) {
-          if (result.mobile === mobile) {
+          if (result.mobile == mobile) {
             res.status(200).send("User Already Exist With This Number");
           } else {
             res.status(200).send("User not found");
