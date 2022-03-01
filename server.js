@@ -2,10 +2,13 @@ import express from 'express'
 import mongoose from "mongoose";
 import MongoClient  from "mongodb";
 import userSchema from "./userModel.js";
+import bodyParser from 'body-parser';
 
 
 const app = express()
 const port = 3005
+
+app.use(bodyParser.json());
 
 // DB config
 const mongoURI =
@@ -28,7 +31,6 @@ app.get('/', (req, res) => {
 })
 
 app.post("/sign-up", (req, res) => {  
-  console.log("request---------->",req)
     const finalUser = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -37,13 +39,12 @@ app.post("/sign-up", (req, res) => {
   
     userSchema.create(finalUser, (err, data) => {
       if (err) {
-        console.log("err in sign up------------------> ",err)
         res.status(500).send(err);
       } else {
         res.status(201).send(data);
       }
     });
-  });
+});
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening on port 3005`)
