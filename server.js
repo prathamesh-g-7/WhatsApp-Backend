@@ -1,8 +1,8 @@
-import express from 'express'
-import mongoose from "mongoose";
-import MongoClient  from "mongodb";
-import userSchema from "./userModel.js";
-import bodyParser from 'body-parser';
+const express = require('express')
+const mongoose = require("mongoose")
+const MongoClient = require('mongodb').MongoClient
+const bodyParser = require('body-parser')
+const userSchema = require("./userModel.js")
 
 
 const app = express()
@@ -30,6 +30,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+// signup API
 app.post("/sign-up", (req, res) => {  
     const finalUser = {
       firstName: req.body.firstName,
@@ -45,6 +46,31 @@ app.post("/sign-up", (req, res) => {
       }
     });
 });
+
+// API to check if user already exist
+app.post("/user-exist", (req, res) => {  
+  MongoClient.connect(mongoURI, (err, db) => {
+    if (err) throw err;
+
+    let mobile = req.body.mobNumber;
+    const dbo = db.db("whatsapp_DB");
+
+    dbo.collection("users").findOne({ mobile:  mobile}, (err, result) => {
+      if (err) throw err;
+      
+      if (result) {
+        if (result.mobile === mobile) {
+          res.status(200).send("User Already Exist With This Number");
+        } else {
+          res.status(200).send("User not found");
+        }
+      } else {
+        res.status(200).send("Faild To Fetch Details");
+      }
+    });
+  })
+});
+
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening on port 3005`)
