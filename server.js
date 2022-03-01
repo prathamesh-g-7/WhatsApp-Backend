@@ -49,15 +49,15 @@ app.post("/sign-up", (req, res) => {
 
 // API to check if user already exist
 app.post("/user-exist", (req, res) => {  
-  MongoClient.connect(mongoURI, (err, db) => {
+  MongoClient.connect(mongoURI, async(err, db) => {
     if (err) throw err;
 
     let mobile = req.body.mobNumber;
     const dbo = db.db("whatsapp_DB");
 
-    dbo.collection("users").findOne({ mobile:  mobile}, (err, result) => {
+    await dbo.collection("users").findOne({ mobile: mobile}, (err, result) => {
       if (err) throw err;
-      
+
       if (result) {
         if (result.mobile === mobile) {
           res.status(200).send("User Already Exist With This Number");
