@@ -58,15 +58,17 @@ app.post("/user-exist", (req, res) => {
     await dbo.collection("users").findOne({ mobile: mobile}, (err, result) => {
       if (err) throw err;
 
-      if (result) {
-        if (result.mobile === mobile) {
-          res.status(200).send("User Already Exist With This Number");
+      setTimeout(() => {
+        if (result) {
+          if (result.mobile === mobile) {
+            res.status(200).send("User Already Exist With This Number");
+          } else {
+            res.status(200).send("User not found");
+          }
         } else {
-          res.status(200).send("User not found");
+          res.status(200).send("Faild To Fetch Details");
         }
-      } else {
-        res.status(200).send("Faild To Fetch Details");
-      }
+      }, 3000);
     });
   })
 });
